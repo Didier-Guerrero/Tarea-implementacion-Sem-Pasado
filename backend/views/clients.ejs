@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clientes Ordenados</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Lista de Clientes Ordenados</h1>
+
+      <div class="button-container">
+        <!-- Botón para ver la lista de clientes (mismo botón que redirige a esta página) -->
+        <button onclick="window.location.href='/clients'">Ver Clientes</button>
+
+        <!-- Botón para navegar a la vista de filtrar contratos -->
+        <button onclick="window.location.href='/clients_contracts'">
+          Filtrar Contratos
+        </button>
+      </div>
+
+      <table class="table is-striped is-bordered mt-2 is-fullwidth">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre del Cliente</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% clientes.forEach(cliente => { %>
+          <tr>
+            <td><%= cliente.id_cli %></td>
+            <td><%= cliente.nombre_cli %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

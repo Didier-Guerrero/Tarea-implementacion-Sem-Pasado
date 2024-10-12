@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Filtrar Contratos</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Filtrar Contratos por Fechas</h1>
+
+      <div class="button-container">
+        <!-- Botón para ver la lista de clientes -->
+        <button onclick="window.location.href='/clients'">Ver Clientes</button>
+
+        <!-- Botón para navegar a la vista de filtrar contratos (mismo botón que redirige a esta página) -->
+        <button onclick="window.location.href='/clients_contracts'">
+          Filtrar Contratos
+        </button>
+      </div>
+
+      <div>
+        <label>Desde:</label>
+        <input type="date" id="desde" />
+        <label>Hasta:</label>
+        <input type="date" id="hasta" />
+        <button id="filtrarBtn">Filtrar Contratos</button>
+      </div>
+
+      <div>
+        <h2>Contratos Filtrados</h2>
+        <table class="table is-striped is-bordered mt-2 is-fullwidth">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Monto Total</th>
+            </tr>
+          </thead>
+          <tbody id="contratos-list">
+            <!-- Aquí se llenará la lista de contratos filtrados -->
+          </tbody>
+        </table>
+      </div>
+
+      <script>
+        document
+          .getElementById("filtrarBtn")
+          .addEventListener("click", async () => {
+            const desde = document.getElementById("desde").value;
+            const hasta = document.getElementById("hasta").value;
+
+            if (desde && hasta) {
+              try {
+                const response = await fetch(`/filter/${desde},${hasta}`, {
+                  method: "POST",
+                });
+                const contratos = await response.json();
+
+                // Limpiar la tabla antes de agregar nuevos contratos
+                const contratosList = document.getElementById("contratos-list");
+                contratosList.innerHTML = "";
+
+                // Agregar los contratos a la tabla
+                contratos.forEach((contrato) => {
+                  const row = document.createElement("tr");
+                  row.innerHTML = `
+                                <td>${contrato.id}</td>
+                                <td>${contrato.cliente}</td>
+                                <td>${contrato.monto}</td>
+                            `;
+                  contratosList.appendChild(row);
+                });
+              } catch (err) {
+                console.error("Error al filtrar los contratos:", err);
+              }
+            } else {
+              alert("Por favor selecciona ambas fechas.");
+            }
+          });
+      </script>
+    </div>
+  </body>
+</html>
